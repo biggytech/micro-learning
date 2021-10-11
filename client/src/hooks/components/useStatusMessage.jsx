@@ -1,9 +1,13 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState, useEffect } from 'react';
 
 import StatusMessage from '../../components/StatusMessage';
 
 const useStatusMessage = ({ initial }) => {
 	const [message, setMessage] = useState(initial);
+
+	useEffect(() => {
+		setMessage(initial);
+	}, [initial]);
 
 	const statusMessage = useMemo(() => {
 		return <StatusMessage {...message} />;

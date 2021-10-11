@@ -37,9 +37,7 @@ const useCacheStatus = ({ onChange }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	return {
-		status,
-	};
+	return status;
 };
 
 export default useCacheStatus;
