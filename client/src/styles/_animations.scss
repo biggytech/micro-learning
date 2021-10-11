@@ -1,0 +1,36 @@
+@keyframes fullOpacity {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes smallOpacity {
+	from {
+		opacity: 0.65;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes bounceFromTop {
+	0% {
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
+	50% {
+		opacity: 1;
+		transform: translate(-50%, 10px);
+	}
+	80% {
+		opacity: 1;
+		transform: translate(-50%, 10px);
+	}
+	100% {
+		opacity: 0;
+		transform: translate(-50%, 10px);
+	}
+}

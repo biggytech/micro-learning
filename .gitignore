@@ -1,0 +1,11 @@
+node_modules
+
+client/dist/*
+client/auto_cacheAssetsList.json
+client/cert.pem
+client/key.pem
+.vscode
+*.env
+
+# except files from the 'dist'
+!client/dist/manifest.json

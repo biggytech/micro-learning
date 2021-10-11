@@ -1,0 +1,95 @@
+@import 'colors'; // automatically generated during the build
+@import 'animations';
+
+@import 'components/status-message';
+@import 'components/error-message';
+@import 'components/add-form';
+@import 'components/offline-message';
+@import 'components/success-message';
+@import 'components/links';
+@import 'components/count-links';
+@import 'components/settings';
+
+html {
+	font-size: 18px;
+	font-family: sans-serif;
+	color: $font;
+}
+
+body {
+	margin: 0;
+	background-color: $main;
+	overflow: auto;
+}
+
+p {
+	margin: 0;
+}
+
+button[disabled] {
+	opacity: 0.3;
+	cursor: not-allowed;
+}
+
+.app-shell {
+	position: relative;
+	background-color: $main;
+	margin: 0;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5em 0.2em 0.5em 0.5em;
+	flex-wrap: wrap;
+	position: sticky;
+	position: -webkit-sticky;
+	top: 0;
+	left: 0;
+	right: 0;
+	background-color: $main;
+	z-index: 1;
+
+	&__link {
+		user-select: none;
+	}
+}
+
+.content {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	flex-shrink: 1;
+	min-height: 0px;
+	margin-bottom: 5em;
+
+	&--centered {
+		justify-content: center;
+		padding: 1em;
+	}
+}
+
+.go-back {
+	color: #fdfffc;
+}
+
+.app {
+	flex-grow: 1;
+	display: flex;
+	flex-shrink: 1;
+	flex-direction: column;
+	min-height: 0px;
+}
+
+.info-block {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}

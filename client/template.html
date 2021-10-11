@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{{title}}</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+		{{fonts}}
+
+		<link rel="stylesheet" href="./styles.css" />
+		<link rel="manifest" href="./manifest.json" />
+
+		<meta name="theme-color" content="{{color-font}}" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="application-name" content="Micro Learning" />
+		<link rel="icon" sizes="192x192" href="./images/favicon.png" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta
+			name="apple-mobile-web-app-status-bar-style"
+			content="{{color-main}}"
+		/>
+		<meta name="apple-mobile-web-app-title" content="Micro Learning" />
+		<link rel="apple-touch-icon" href="./images/icon-192x192.png" />
+		<meta name="msapplication-TileColor" content="{{color-main}}" />
+		<meta
+			name="msapplication-TileImage"
+			content="./images/icon-192x192.png"
+		/>
+	</head>
+	<body>
+		<div id="app" class="app-shell">{{content}}</div>
+
+		{{scripts}}
+	</body>
+</html>

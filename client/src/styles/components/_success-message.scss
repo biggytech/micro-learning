@@ -1,0 +1,27 @@
+.success-message {
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	padding: 0.5em;
+	background: $main-light;
+	border-radius: 1px;
+	font-weight: 700;
+	box-shadow: -2px -2px 20px -10px rgba($success-light, 0.8),
+		3px 3px 7px 3px rgb(0 0 0 / 50%);
+	border: 1px solid $success-light;
+	color: $success-light;
+	animation-name: bounceFromTop;
+	animation-duration: 1.5s;
+	animation-timing-function: cubic-bezier(0.23, 1.55, 0.45, 0.62);
+	animation-fill-mode: forwards;
+	user-select: none;
+
+	&__text {
+		color: $success-light;
+		font-weight: 700;
+		text-shadow: 1px 1px black;
+		font-size: 0.7em;
+		letter-spacing: 0.15em;
+	}
+}

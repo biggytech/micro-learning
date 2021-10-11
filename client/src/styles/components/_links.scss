@@ -1,0 +1,97 @@
+.links-list {
+	list-style: none;
+	padding: 0 0 3em;
+	margin: 0;
+	flex-shrink: 1;
+	min-height: 0px;
+	flex-grow: 1;
+}
+
+.link {
+	margin-bottom: 0.8em;
+	background: linear-gradient(
+		to right,
+		rgba($success, 0.3),
+		rgba($tint, 0.3)
+	);
+	border-radius: 1px;
+	padding-left: 0.3em;
+	font-size: 1em;
+	display: flex;
+	justify-content: space-between;
+
+	&__a {
+		text-decoration: none;
+		color: $font;
+		transition: all 0.5s;
+		border-bottom: 1px solid transparent;
+		flex-shrink: 1;
+		flex-grow: 1;
+		min-width: 0px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		-webkit-tap-highlight-color: success-light;
+		line-height: 1.6em;
+		padding: 0.3em;
+
+		&:active {
+			border-bottom: 1px solid $font;
+		}
+
+		@media (hover: hover) {
+			&:hover {
+				border-bottom: 1px solid $font;
+			}
+		}
+	}
+
+	&__buttons {
+		flex-shrink: 0;
+	}
+
+	&__button {
+		border: none;
+		background: $font;
+		border-radius: 1px;
+		padding: 0.3em 0.5em;
+		width: 2.5em;
+		color: $main;
+		cursor: pointer;
+		transition: all 0.5s;
+		font-size: 1em;
+		height: 100%;
+
+		&_success {
+			margin-right: 0.4em;
+			-webkit-tap-highlight-color: $success;
+
+			&:active {
+				background-color: $success;
+				color: $font;
+			}
+
+			@media (hover: hover) {
+				&:hover {
+					background-color: $success;
+					color: $font;
+				}
+			}
+		}
+
+		&_danger {
+			-webkit-tap-highlight-color: $error;
+			&:active {
+				background-color: $error;
+				color: $font;
+			}
+
+			@media (hover: hover) {
+				&:hover {
+					background-color: $error;
+					color: $font;
+				}
+			}
+		}
+	}
+}

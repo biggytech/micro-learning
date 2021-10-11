@@ -1,0 +1,8 @@
+{
+	"fonts": [
+		{
+			"url": "https://kit.fontawesome.com/0085c8f698.js",
+			"htmlCode": "<script src=\"{{url}}\" crossorigin=\"anonymous\"></script>"
+		}
+	]
+}

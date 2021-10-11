@@ -1,0 +1,12 @@
+.count-links {
+	margin-top: 1em;
+	font-size: 0.8em;
+	text-align: right;
+	opacity: 0.5;
+	user-select: none;
+
+	&__empty {
+		text-align: center;
+		opacity: 1;
+	}
+}

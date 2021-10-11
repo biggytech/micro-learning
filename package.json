@@ -1,0 +1,74 @@
+{
+  "name": "micro-learning",
+  "version": "1.0.0",
+  "description": "Micro Learning app allows you to read your saved articles easilly!",
+  "main": "main.js",
+  "scripts": {
+    "build:images": "node ./client/scripts/prepareImages.mjs",
+    "build:styles": "node ./client/scripts/compileStyles.js",
+    "build:pages": "node ./client/scripts/generatePages.js",
+    "prepare:cache-list": "node ./client/scripts/generateCacheAssetsList.js",
+    "build:main": "npm run prepare:cache-list && cd client && webpack --config ./webpack.config.main.js",
+    "build:main:prod": "npm run prepare:cache-list && cd client && webpack --config ./webpack.config.main.js --env prod",
+    "build:worker": "cd client && webpack --config ./webpack.config.worker.js",
+    "build:worker:prod": "cd client && webpack --config ./webpack.config.worker.js --env prod",
+    "build": "npm run build:pages && npm run build:styles && npm run build:images && npm run build:main && npm run build:worker",
+    "build:prod": "npm run build:pages && npm run build:styles && npm run build:images && npm run build:main:prod && npm run build:worker:prod",
+    "watch": "npm-watch",
+    "start": "npm run build && node ./api/server.js",
+    "server:dev": "nodemon -r dotenv/config ./api/server.js dotenv_config_path=./config/dev.env"
+  },
+  "watch": {
+    "build": [
+      "./src/**/*",
+      "./scripts/**/*",
+      "./assets.json",
+      "./template.html",
+      "./webpack.config.main.js",
+      "./webpack.config.worker.js"
+    ]
+  },
+  "keywords": [
+    "app",
+    "pwa"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "7.15.5",
+    "@babel/plugin-syntax-dynamic-import": "7.8.3",
+    "@babel/plugin-transform-react-constant-elements": "7.14.5",
+    "@babel/plugin-transform-runtime": "7.15.0",
+    "@babel/preset-env": "7.15.6",
+    "@babel/preset-react": "7.14.5",
+    "autoprefixer": "10.3.4",
+    "babel-loader": "8.2.2",
+    "babel-plugin-transform-react-remove-prop-types": "0.4.24",
+    "eslint": "7.32.0",
+    "eslint-plugin-react": "7.25.2",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "http-server": "0.9.0",
+    "imagemin": "8.0.0",
+    "imagemin-pngquant": "9.0.2",
+    "jshint": "2.13.1",
+    "nodemon": "2.0.13",
+    "npm-watch": "0.11.0",
+    "postcss": "8.3.6",
+    "prettier": "2.3.2",
+    "sass": "1.37.5",
+    "webpack": "5.49.0",
+    "webpack-cli": "4.7.2"
+  },
+  "dependencies": {
+    "classnames": "2.3.1",
+    "dotenv": "10.0.0",
+    "express": "4.17.1",
+    "mongodb": "4.1.2",
+    "mongoose": "6.0.8",
+    "nanoid": "3.1.25",
+    "node-schedule": "2.0.0",
+    "prop-types": "15.7.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "web-push": "3.4.5"
+  }
+}

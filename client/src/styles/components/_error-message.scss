@@ -1,0 +1,19 @@
+.error-message {
+	color: $error;
+
+	&--global {
+		font-size: 0.7rem;
+		position: absolute;
+		top: 20%;
+		left: 50%;
+		transform: translateX(-50%);
+		display: block;
+		text-align: center;
+		width: 90%;
+	}
+
+	&--single {
+		font-size: 0.7em;
+		font-style: italic;
+	}
+}

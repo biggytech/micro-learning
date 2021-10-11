@@ -1,0 +1,103 @@
+.settings {
+	&__button {
+		border: none;
+		background: $font;
+		border-radius: 1px;
+		padding: 0.3em 0.5em;
+		color: $main;
+		cursor: pointer;
+		transition: all 0.5s;
+		font-size: 0.8em;
+		margin-top: 0.6em;
+		-webkit-tap-highlight-color: $success;
+
+		&:not([disabled]):active {
+			background-color: $success;
+			color: $font;
+		}
+
+		@media (hover: hover) {
+			&:not([disabled]):hover {
+				background-color: $success;
+				color: $font;
+			}
+		}
+	}
+
+	&__list {
+		width: 280px;
+		margin: 0;
+		padding: 0.5em;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		list-style: none;
+		background: $main;
+		display: flex;
+		flex-direction: column;
+		transition: transform 0.4s ease-in-out;
+		border: 2px solid $font;
+		box-sizing: border-box;
+		text-align: right;
+
+		&-wrapper {
+			content: '';
+			position: absolute;
+			background: rgba(1, 1, 3, 0.56);
+			top: -2px;
+			left: -100vw;
+			right: calc(100% + 2px);
+			bottom: 0;
+		}
+
+		&--closed {
+			transform: translateX(100%);
+
+			.settings__list-wrapper {
+				display: none;
+			}
+		}
+	}
+
+	&__item {
+		border-bottom: 1px solid $font;
+		padding-bottom: 1em;
+	}
+
+	&__notification {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+	}
+
+	&__label {
+		margin-bottom: 0.5em;
+		font-size: 0.8em;
+	}
+
+	&__select {
+		border: none;
+		background: $font;
+		border-radius: 1px;
+		padding: 0.3em 0.5em;
+		color: $main;
+		cursor: pointer;
+		transition: all 0.5s;
+		font-size: 0.8em;
+		margin-top: 0.6em;
+		-webkit-tap-highlight-color: $success;
+
+		&:not([disabled]):active {
+			background-color: $success;
+			color: $font;
+		}
+
+		@media (hover: hover) {
+			&:not([disabled]):hover {
+				background-color: $success;
+				color: $font;
+			}
+		}
+	}
+}

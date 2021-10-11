@@ -1,0 +1,88 @@
+.add-form {
+	display: flex;
+	flex-direction: row-reverse;
+	background: linear-gradient(to left, $success-light, $tint);
+	padding: 3px;
+	border-radius: 1px;
+	width: 100%;
+	-webkit-tap-highlight-color: $success;
+	box-sizing: border-box;
+
+	&:not([disabled]):active {
+		background: linear-gradient(to left, $success-light, $tint-light);
+	}
+
+	@media (hover: hover) {
+		&:not([disabled]):hover {
+			background: linear-gradient(to left, $success-light, $tint-light);
+		}
+	}
+
+	&__input {
+		color: $main;
+		flex-grow: 1;
+		padding: 0.7em;
+		border-radius: 1px 0 0 1px;
+		outline: none;
+		transition: all 0.3s;
+		font-size: 0.9em;
+		line-height: 1;
+		border: none;
+		min-width: 2.5em;
+
+		&:focus {
+			box-shadow: 0 0 15px 7px rgba($success, 0.3);
+		}
+
+		&::placeholder {
+			font-style: italic;
+		}
+
+		&--error {
+			border: 1px solid $error;
+			box-shadow: 0 0 10px $error;
+		}
+	}
+
+	&__button {
+		background: linear-gradient(to left, $success-light, $tint-light);
+		border: none;
+		color: #fdfffc;
+		font-weight: 700;
+		padding: 0 1em;
+		cursor: pointer;
+		letter-spacing: 0.05em;
+		font-size: 1.1em;
+		transition: all 0.3s;
+		text-shadow: 1px 1px 2px $main;
+		-webkit-tap-highlight-color: $success;
+		user-select: none;
+
+		&:active {
+			background-color: $success;
+			outline: 5px solid $tint;
+			box-shadow: 0 0 15px 7px rgba($success, 0.3);
+
+			& + .add-form__input {
+				border-color: $success-light;
+				box-shadow: 0 0 15px 7px rgba($success, 0.3);
+			}
+		}
+
+		@media (hover: hover) {
+			&:hover {
+				background: linear-gradient(
+					to left,
+					$success-light,
+					$tint-light
+				);
+				box-shadow: 0 0 15px 7px rgba($success, 0.3);
+
+				& + .add-form__input {
+					border-color: $success-light;
+					box-shadow: 0 0 15px 7px rgba($success, 0.3);
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"main": "#011627",
+	"main-light": "#1e3241",
+	"font": "#FDFFFC",
+	"success": "#29a89d",
+	"success-light": "#2ec4b6",
+	"tint": "#2e98c4",
+	"tint-light": "#2eb3c4",
+	"error": "#E71D36",
+	"neutral": "#FF9F1C"
+}
