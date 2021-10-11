@@ -16,7 +16,7 @@ module.exports = {
 		production: {
 			plugins: [
 				[
-					'tranform-react-remove-prop-types',
+					'transform-react-remove-prop-types',
 					{
 						removeImport: true,
 					},
