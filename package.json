@@ -13,7 +13,7 @@
     "build:worker": "cd client && webpack --config ./webpack.config.worker.js",
     "build:worker:prod": "cd client && webpack --config ./webpack.config.worker.js --env prod",
     "build": "npm run build:pages && npm run build:styles && npm run build:images && npm run build:main && npm run build:worker",
-    "build:prod": "npm run build:pages && npm run build:styles && npm run build:images && npm run build:main:prod && npm run build:worker:prod",
+    "build:dev": "set IS_DEV=1 && npm run build:pages && npm run build:styles && npm run build:images && npm run build:main && npm run build:worker",
     "watch": "npm-watch",
     "start": "npm run build && node ./api/server.js",
     "server:dev": "nodemon -r dotenv/config ./api/server.js dotenv_config_path=./config/dev.env"
