@@ -11,8 +11,6 @@ const stylesPath = '../src/styles/styles.scss',
 
 compileStyles();
 
-console.log(process.env.IS_DEV);
-
 async function compileStyles() {
 	await createTempColorsFile();
 
@@ -22,7 +20,7 @@ async function compileStyles() {
 		.renderSync({
 			file: path.resolve(__dirname, stylesPath),
 			outFile, // needed to get source map working, but we generate outFile by ourselfs
-			sourceMap: true,
+			sourceMap: !!+process.env.IS_DEV,
 			outputStyle: 'compressed',
 			sourceMapEmbed: true,
 		})
