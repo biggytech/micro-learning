@@ -211,7 +211,9 @@ function Controller() {
 				{isReady && (
 					<SettingsMenu>
 						{supportStatus.offline && installSettings}
-						{supportStatus.push && notificationSettings}
+						{notificationsHour !== null &&
+							supportStatus.push &&
+							notificationSettings}
 						{isHasCompletedLinks && linksSettings}
 					</SettingsMenu>
 				)}

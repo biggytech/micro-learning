@@ -109,11 +109,12 @@ NotificationsSettings.propTypes = {
 	onEnableClick: PropTypes.func.isRequired,
 	notificationPermission: PropTypes.string,
 	onNotificationTimeSave: PropTypes.func.isRequired,
-	notificationsHour: PropTypes.number.isRequired,
+	notificationsHour: PropTypes.number,
 };
 
 NotificationsSettings.defaultProps = {
 	notificationPermission: null,
+	notificationsHour: null,
 };
 
 export default NotificationsSettings;

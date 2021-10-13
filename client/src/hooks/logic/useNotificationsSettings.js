@@ -5,12 +5,10 @@ import api from '../../api';
 import { isPushSupported } from '../../utils';
 
 const useNotificationsSettings = ({ registration, clientId }) => {
-	const isInitialized = useRef(false);
-
 	const [notificationPermission, setNotificationPermission] = useState(
 		isPushSupported() ? Notification?.permission : '',
 	);
-	const [notificationsHour, setNotificationsHour] = useState(-1);
+	const [notificationsHour, setNotificationsHour] = useState(null);
 
 	const requestNotificationPermissionIfNeeded = useCallback(() => {
 		if (Notification?.permission !== 'denied') {
@@ -70,28 +68,26 @@ const useNotificationsSettings = ({ registration, clientId }) => {
 	}, [registration, clientId, notificationsHour]);
 
 	const handleNotificationTimeSave = useCallback(async (time) => {
-		setNotificationsHour(time);
 		await settingsDB.put({
 			notificationsHour: time,
 		});
+		setNotificationsHour(time);
 	}, []);
 
 	const init = useCallback(async () => {
 		const settings = await settingsDB.get();
-		isInitialized.current = true;
 		if (settings?.notificationsHour) {
 			setNotificationsHour(settings.notificationsHour);
+		} else {
+			setNotificationsHour(-1);
 		}
 	}, []);
 
 	useEffect(() => {
-		if (
-			registration &&
-			notificationPermission === 'granted' &&
-			clientId &&
-			isInitialized.current
-		) {
-			saveSettings();
+		if (registration && notificationPermission === 'granted' && clientId) {
+			if (notificationsHour !== null) {
+				saveSettings();
+			}
 		}
 	}, [
 		notificationsHour,
