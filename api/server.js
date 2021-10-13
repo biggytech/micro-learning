@@ -6,10 +6,13 @@ const scheduler = require("./scheduler");
 const settings = require("./repository/settings");
 const keys = require("./repository/keys");
 const { keepDynoAwake } = require("./utils");
+const {
+  SCHEDULER_INTERVAL_IN_MIN,
+  PUSH_LIFETIME_IN_SECONDS,
+  DEFAULT_APP_PORT,
+} = require("./constants");
 
-const PORT = process.env.PORT || 3000,
-  PUSH_LIFETIME_IN_SECONDS = 60 * 60 * 24, // one day
-  SCHEDULER_INTERVAL_IN_MIN = 1;
+const PORT = process.env.PORT || DEFAULT_APP_PORT;
 
 startTheApp();
 
