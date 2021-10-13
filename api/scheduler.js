@@ -19,32 +19,32 @@ const scheduler = {
           `Preffered: ${settings.notificationsHourUTC}:${settings.notificationsMinuteUTC}`
         );
 
-        if (
-          settings.notificationsHourUTC === currentHourUTC &&
-          settings.notificationsMinuteUTC === currentMinuteUTC
-        ) {
-          try {
-            const result = await webpush.sendNotification(
-              JSON.parse(settings.subscription),
-              "",
-              {
-                vapidDetails: {
-                  subject: `mailto:${process.env.DEV_MAIL}`,
-                  publicKey: vapidKeys.publicKey,
-                  privateKey: vapidKeys.privateKey,
-                },
-                TTL: pushLifetimeInSec,
-              }
-            );
-            console.log(result);
-          } catch (e) {
-            if (e.statusCode === 410) {
-              await settingsRepo.delete(settings.clientId);
-            } else {
-              console.log(e);
+        // if (
+        //   settings.notificationsHourUTC === currentHourUTC &&
+        //   settings.notificationsMinuteUTC === currentMinuteUTC
+        // ) {
+        try {
+          const result = await webpush.sendNotification(
+            JSON.parse(settings.subscription),
+            "",
+            {
+              vapidDetails: {
+                subject: `mailto:${process.env.DEV_MAIL}`,
+                publicKey: vapidKeys.publicKey,
+                privateKey: vapidKeys.privateKey,
+              },
+              TTL: pushLifetimeInSec,
             }
+          );
+          console.log(result);
+        } catch (e) {
+          if (e.statusCode === 410) {
+            await settingsRepo.delete(settings.clientId);
+          } else {
+            console.log(e);
           }
         }
+        // }
       }
     });
   },

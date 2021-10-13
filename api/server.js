@@ -9,7 +9,7 @@ const { keepDynoAwake } = require("./utils");
 
 const PORT = process.env.PORT || 3000,
   PUSH_LIFETIME_IN_SECONDS = 60 * 60 * 24, // one day
-  SCHEDULER_INTERVAL_IN_MIN = 30;
+  SCHEDULER_INTERVAL_IN_MIN = 1;
 
 startTheApp();
 
