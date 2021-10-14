@@ -5,7 +5,7 @@ require("./db");
 const scheduler = require("./scheduler");
 const settings = require("./repository/settings");
 const keys = require("./repository/keys");
-const { keepDynoAwake } = require("./utils");
+const { keepDynoAwake } = require("./services");
 const {
   SCHEDULER_INTERVAL_IN_MIN,
   PUSH_LIFETIME_IN_SECONDS,
@@ -15,6 +15,12 @@ const {
 const PORT = process.env.PORT || DEFAULT_APP_PORT;
 
 startTheApp();
+
+process.on("uncaughtException", (err) => {
+  console.log("UNCAUGHT EXCEPTION!");
+  console.log(err);
+  console.log(err.stack);
+});
 
 async function startTheApp() {
   if (!+process.env.IS_DEV) {
@@ -31,6 +37,13 @@ async function startTheApp() {
 
   app.use(express.static(path.resolve(__dirname, "../client/dist")));
   app.use(express.json());
+  app.use((err, req, res, next) => {
+    console.log(err);
+    console.log(err.stack);
+    res.status(500).send({
+      error: err.message,
+    });
+  });
 
   app.get("/api/keys", (req, res) => {
     console.log("GET /api/keys");
