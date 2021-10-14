@@ -2,6 +2,7 @@ const schedule = require("node-schedule");
 const webpush = require("web-push");
 
 const settingsRepo = require("./repository/settings");
+const { getCurrentUTC } = require("./services");
 
 const scheduler = {
   scheduleSendingNotifications: (
@@ -10,19 +11,18 @@ const scheduler = {
   ) => {
     schedule.scheduleJob(`*/${intervalInMin} * * * *`, async () => {
       for await (const settings of settingsRepo.find()) {
-        const currentServerTime = new Date(),
-          currentHourUTC = currentServerTime.getUTCHours(),
-          currentMinuteUTC = currentServerTime.getUTCMinutes();
+        const { hour, minute } = getCurrentUTC();
 
-        console.log(`Current UTC: ${currentHourUTC}:${currentMinuteUTC}`);
+        console.log("Run sending notifications");
+        console.log(`Current UTC: ${hour}:${minute}`);
         console.log(
           `Preffered: ${settings.notificationsHourUTC}:${settings.notificationsMinuteUTC}`
         );
 
         if (
           !!+process.env.DISABLE_PUSH_TIME_RESTRICTIONS ||
-          (settings.notificationsHourUTC === currentHourUTC &&
-            settings.notificationsMinuteUTC === currentMinuteUTC)
+          (settings.notificationsHourUTC === hour &&
+            settings.notificationsMinuteUTC === minute)
         ) {
           try {
             const result = await webpush.sendNotification(
@@ -46,6 +46,24 @@ const scheduler = {
             }
           }
         }
+      }
+    });
+  },
+  scheduleClearingUnusedSettings: () => {
+    schedule.scheduleJob("0 0 * * 0", async () => {
+      // every week
+      console.log("Run clearing unused settings");
+      const now = new Date();
+      console.log(`Current time: ${now}`);
+      const lastWeek = new Date(now.setDate(now.getDate() - 7));
+      console.log(`Last week: ${lastWeek}`);
+      for await (const settings of settingsRepo.find({
+        updatedAt: { $lte: lastWeek },
+      })) {
+        console.log(`Settings last updated at: ${settings.updatedAt}`);
+        console.log("Settings to delete:");
+        console.log(settings);
+        await settingsRepo.delete(settings.clientId);
       }
     });
   },

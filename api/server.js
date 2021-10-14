@@ -32,6 +32,7 @@ async function startTheApp() {
     intervalInMin: SCHEDULER_INTERVAL_IN_MIN,
     pushLifetimeInSec: PUSH_LIFETIME_IN_SECONDS,
   });
+  scheduler.scheduleClearingUnusedSettings();
 
   const app = express();
 

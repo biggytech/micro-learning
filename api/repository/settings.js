@@ -14,7 +14,7 @@ const settings = {
 
     return docObject;
   },
-  find: () => Settings.find(),
+  find: (...args) => Settings.find(...args),
 };
 
 module.exports = settings;
