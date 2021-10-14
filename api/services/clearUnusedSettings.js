@@ -1,4 +1,4 @@
-const settingsRepo = require("./repository/settings");
+const settingsRepo = require("../repository/settings");
 
 const clearUnusedSettings = async () => {
   console.log("Run clearing unused settings");
