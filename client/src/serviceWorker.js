@@ -48,7 +48,7 @@ self.addEventListener('push', async (e) => {
 				};
 				// Notification.maxActions
 
-				self.registration.showNotification(
+				return self.registration.showNotification(
 					'You got new link to read!',
 					options,
 				);
