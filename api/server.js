@@ -1,61 +1,59 @@
+const schedule = require("node-schedule");
 const express = require("express");
 const path = require("path");
 require("./db");
 
-const scheduler = require("./scheduler");
 const settings = require("./repository/settings");
 const keys = require("./repository/keys");
-const { keepDynoAwake } = require("./services");
+const {
+  keepDynoAwake,
+  handleGlobalError,
+  sendNotifications,
+  clearUnusedSettings,
+} = require("./services");
 const {
   SCHEDULER_INTERVAL_IN_MIN,
   PUSH_LIFETIME_IN_SECONDS,
   DEFAULT_APP_PORT,
+  BASE_URL,
 } = require("./constants");
+const { errorHandler, requestLogger } = require("./middleware");
 
 const PORT = process.env.PORT || DEFAULT_APP_PORT;
 
+process.on("uncaughtException", handleGlobalError);
 startTheApp();
-
-process.on("uncaughtException", (err) => {
-  console.log("UNCAUGHT EXCEPTION!");
-  console.log(err);
-  console.log(err.stack);
-});
 
 async function startTheApp() {
   if (!+process.env.IS_DEV) {
     keepDynoAwake();
   }
 
-  const vapidKeys = await getVAPIDKeys();
-  scheduler.scheduleSendingNotifications(vapidKeys, {
-    intervalInMin: SCHEDULER_INTERVAL_IN_MIN,
-    pushLifetimeInSec: PUSH_LIFETIME_IN_SECONDS,
-  });
-  scheduler.scheduleClearingUnusedSettings();
-
-  const app = express();
-
-  app.use(express.static(path.resolve(__dirname, "../client/dist")));
-  app.use(express.json());
-  app.use((err, req, res, next) => {
-    console.log(err);
-    console.log(err.stack);
-    res.status(500).send({
-      error: err.message,
+  const vapidKeys = await keys.getOrCreate();
+  schedule.scheduleJob(`*/${SCHEDULER_INTERVAL_IN_MIN} * * * *`, async () => {
+    await sendNotifications(vapidKeys, {
+      pushLifetimeInSec: PUSH_LIFETIME_IN_SECONDS,
     });
   });
+  // every week
+  schedule.scheduleJob("0 0 * * 0", async () => {
+    await clearUnusedSettings();
+  });
 
-  app.get("/api/keys", (req, res) => {
-    console.log("GET /api/keys");
+  const app = express();
+  app.use(express.static(path.resolve(__dirname, "../client/dist")));
+  app.use(express.json());
+  app.use(requestLogger());
+  app.use(errorHandler());
+
+  app.get(`${BASE_URL}/keys`, (req, res) => {
     res.send({
       publicKey: vapidKeys.publicKey,
     });
   });
 
-  app.post("/api/settings/delete", async (req, res) => {
+  app.post(`${BASE_URL}/settings/delete`, async (req, res) => {
     const clientId = req.body.clientId;
-    console.log(`POST /api/settings/delete ${clientId}`);
 
     if (!clientId) {
       return res.status(400).send({
@@ -75,10 +73,8 @@ async function startTheApp() {
     }
   });
 
-  app.post("/api/settings", async (req, res) => {
+  app.post(`${BASE_URL}/settings`, async (req, res) => {
     const body = req.body;
-    console.log("POST /api/settings");
-    console.log(JSON.stringify(body));
 
     if (!body.clientId) {
       return res.status(400).send({
@@ -101,12 +97,4 @@ async function startTheApp() {
   app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`);
   });
-}
-
-async function getVAPIDKeys() {
-  const existingKeys = await keys.get();
-  if (existingKeys) {
-    return existingKeys;
-  }
-  return await keys.create();
 }

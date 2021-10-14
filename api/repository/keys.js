@@ -16,6 +16,13 @@ const keys = {
       versionKey: false,
     });
   },
+  getOrCreate: async () => {
+    const existingKeys = await keys.get();
+    if (existingKeys) {
+      return existingKeys;
+    }
+    return await keys.create();
+  },
 };
 
 module.exports = keys;
