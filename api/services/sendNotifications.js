@@ -1,7 +1,7 @@
 const webpush = require("web-push");
 
 const settingsRepo = require("../repository/settings");
-const { getCurrentUTC } = require("./index");
+const getCurrentUTC = require("./getCurrentUTC");
 
 const sendNotifications = async (vapidKeys, { pushLifetimeInSec }) => {
   for await (const settings of settingsRepo.find()) {
