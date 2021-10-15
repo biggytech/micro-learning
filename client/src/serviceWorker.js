@@ -1,6 +1,7 @@
 import cache from './cache';
 import links from './db/links';
 import db from './db';
+import { NOTIFICATION_ACTIONS } from './constants';
 
 const NOTIFICATIONS_GROUP_TAG = '1';
 
@@ -34,31 +35,87 @@ self.addEventListener('push', async (e) => {
 		(async () => {
 			await db.initialize();
 			const data = await links.getAll();
-			const link = data.links?.[0]?.url;
+			const link = data.links?.[0];
 
 			if (link) {
-				const options = {
-					icon: 'images/notification.png',
-					tag: NOTIFICATIONS_GROUP_TAG,
-					renotify: true,
-					body: `Link: ${link}`,
-					data: {
-						link,
-					},
-				};
-				// Notification.maxActions
-
-				return self.registration.showNotification(
-					'You got new link to read!',
-					options,
-				);
+				return await createNotification({
+					title: 'Time to read a link!',
+					data: link,
+					body: `Link: ${link.url}`,
+				});
 			}
 		})(),
 	);
 });
 
 self.addEventListener('notificationclick', (e) => {
-	const link = e.notification.data.link;
+	const notification = e.notification;
+	const action = e.action;
 
-	clients.openWindow(link);
+	if (action === NOTIFICATION_ACTIONS.COMPLETE.action) {
+		e.waitUntil(
+			(async () => {
+				await db.initialize();
+				await links.complete(notification.data.key);
+				notification.close();
+			})(),
+		);
+	} else if (action === NOTIFICATION_ACTIONS.CLEAR.action) {
+		notification.close();
+	} else {
+		e.waitUntil(
+			(async () => {
+				if (!notification.data.reminder) {
+					const url = notification.data.url;
+					clients.openWindow(url);
+					return await createNotification({
+						title: `Don't forget to complete the link!`,
+						data: { ...notification.data, reminder: true },
+					});
+				} else {
+					const clis = await clients.matchAll();
+					const client = clis.find((c) => {
+						c.visibilityState === 'visible';
+					});
+					if (client !== undefined) {
+						client.navigate(self.location.origin);
+						client.focus();
+					} else {
+						// there are no visible windows. Open one.
+						clients.openWindow(self.location.origin);
+						notification.close();
+					}
+				}
+			})(),
+		);
+	}
 });
+
+function createNotification({ title, data, body }) {
+	const options = {
+		icon: 'images/notification.png',
+		tag: NOTIFICATIONS_GROUP_TAG,
+		renotify: true,
+		body,
+		data,
+	};
+	if (
+		Notification &&
+		'actions' in Notification.prototype &&
+		Notification.maxActions
+	) {
+		switch (Notification.maxActions) {
+			case 2:
+				options.actions = [
+					NOTIFICATION_ACTIONS.COMPLETE,
+					NOTIFICATION_ACTIONS.CLEAR,
+				];
+				break;
+			default:
+				options.actions = [NOTIFICATION_ACTIONS.COMPLETE];
+				break;
+		}
+	}
+
+	return self.registration.showNotification(title, options);
+}
