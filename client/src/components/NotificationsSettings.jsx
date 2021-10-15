@@ -37,6 +37,7 @@ const NotificationsSettings = (props) => {
 		notificationPermission,
 		onNotificationTimeSave,
 		notificationsHour,
+		isLoading,
 	} = props;
 
 	const [selectedTime, setSelectedTime] = useState(-1);
@@ -98,6 +99,7 @@ const NotificationsSettings = (props) => {
 					<button
 						className={`${CLASS_NAME}__button`}
 						onClick={handleTimeSave}
+						disabled={isLoading}
 					>
 						Save changes
 					</button>
@@ -112,6 +114,7 @@ NotificationsSettings.propTypes = {
 	notificationPermission: PropTypes.string,
 	onNotificationTimeSave: PropTypes.func.isRequired,
 	notificationsHour: PropTypes.number,
+	isLoading: PropTypes.bool.isRequired,
 };
 
 NotificationsSettings.defaultProps = {

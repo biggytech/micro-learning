@@ -135,16 +135,42 @@ function Controller() {
 
 	const { errorMessage, renderError } = useError({ isSingle: true });
 
+	const onSettingsSave = useCallback(
+		(message) => {
+			clearMessages();
+			renderSuccess(message);
+		},
+		[clearMessages, renderSuccess],
+	);
+
+	const handleOfflineStatusChange = useCallback(
+		(isOffline) => {
+			if (isOffline) {
+				renderStatus(OFFLINE_STATUS_MESSAGE);
+			} else {
+				handleCacheStatusChange(cacheStatus);
+			}
+		},
+		[renderStatus, cacheStatus, handleCacheStatusChange],
+	);
+
+	const isOffline = useOfflineStatus({
+		onChange: handleOfflineStatusChange,
+	});
+
 	const {
 		notificationPermission,
 		notificationsHour,
 		requestNotificationPermissionIfNeeded,
 		handleNotificationTimeSave,
 		init: initNotificationsSettings,
+		isSaving: isSavingNotificationsSettings,
 	} = useNotificationsSettingsLogic({
 		registration,
 		clientId,
 		onError: renderError,
+		onSave: onSettingsSave,
+		isOffline,
 	});
 	const cacheStatus = useCacheStatus({
 		onChange: handleCacheStatusChange,
@@ -180,6 +206,7 @@ function Controller() {
 		notificationsHour,
 		requestNotificationPermissionIfNeeded,
 		handleNotificationTimeSave,
+		isLoading: isSavingNotificationsSettings,
 	});
 
 	const { linksSettings } = useLinksSettings({ clearCompleted });
@@ -188,21 +215,6 @@ function Controller() {
 		renderError(null);
 		renderSuccess(null);
 	}, [renderError, renderSuccess]);
-
-	const handleOfflineStatusChange = useCallback(
-		(isOffline) => {
-			if (isOffline) {
-				renderStatus(OFFLINE_STATUS_MESSAGE);
-			} else {
-				handleCacheStatusChange(cacheStatus);
-			}
-		},
-		[renderStatus, cacheStatus, handleCacheStatusChange],
-	);
-
-	const isOffline = useOfflineStatus({
-		onChange: handleOfflineStatusChange,
-	});
 
 	const isHasCompletedLinks = total > links.length;
 

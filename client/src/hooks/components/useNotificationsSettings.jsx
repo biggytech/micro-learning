@@ -7,6 +7,7 @@ const useNotificationsSettings = ({
 	notificationsHour,
 	requestNotificationPermissionIfNeeded,
 	handleNotificationTimeSave,
+	isLoading,
 }) => {
 	const notificationSettings = useMemo(() => {
 		return (
@@ -15,6 +16,7 @@ const useNotificationsSettings = ({
 				notificationPermission={notificationPermission}
 				onNotificationTimeSave={handleNotificationTimeSave}
 				notificationsHour={notificationsHour}
+				isLoading={isLoading}
 			/>
 		);
 	}, [
@@ -22,6 +24,7 @@ const useNotificationsSettings = ({
 		notificationPermission,
 		notificationsHour,
 		requestNotificationPermissionIfNeeded,
+		isLoading,
 	]);
 
 	return { notificationSettings };

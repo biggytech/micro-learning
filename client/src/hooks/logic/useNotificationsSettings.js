@@ -4,7 +4,14 @@ import settingsDB from '../../db/settings';
 import api from '../../api';
 import { isPushSupported } from '../../utils';
 
-const useNotificationsSettings = ({ registration, clientId, onError }) => {
+const useNotificationsSettings = ({
+	registration,
+	clientId,
+	onError,
+	onSave,
+	isOffline,
+}) => {
+	const [isSaving, setIsSaving] = useState(false);
 	const [notificationPermission, setNotificationPermission] = useState(
 		isPushSupported() ? Notification?.permission : '',
 	);
@@ -20,6 +27,7 @@ const useNotificationsSettings = ({ registration, clientId, onError }) => {
 
 	const saveSettings = useCallback(async () => {
 		try {
+			setIsSaving(true);
 			let sub = await registration.pushManager.getSubscription();
 			if (!sub) {
 				const keys = await api.getKeys();
@@ -66,12 +74,17 @@ const useNotificationsSettings = ({ registration, clientId, onError }) => {
 			} else {
 				await api.deleteSettings({ clientId });
 			}
+			onSave('Synced to the server!');
 		} catch (e) {
-			if (e.message.indexOf('Failed to fetch') === -1) {
+			if (isOffline || e.message.indexOf('Failed to fetch') !== -1) {
+				onSave('Saved locally!');
+			} else {
 				onError(e);
 			}
+		} finally {
+			setIsSaving(false);
 		}
-	}, [registration, clientId, notificationsHour, onError]);
+	}, [registration, clientId, notificationsHour, onError, onSave, isOffline]);
 
 	const handleNotificationTimeSave = useCallback(async (time) => {
 		await settingsDB.put({
@@ -101,6 +114,7 @@ const useNotificationsSettings = ({ registration, clientId, onError }) => {
 		clientId,
 		saveSettings,
 		notificationPermission,
+		isOffline,
 	]);
 
 	return {
@@ -109,6 +123,7 @@ const useNotificationsSettings = ({ registration, clientId, onError }) => {
 		requestNotificationPermissionIfNeeded,
 		handleNotificationTimeSave,
 		init,
+		isSaving,
 	};
 };
 
