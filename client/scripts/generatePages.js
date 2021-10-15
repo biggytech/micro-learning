@@ -1,7 +1,6 @@
 const fs = require('fs/promises'),
 	path = require('path'),
-	colors = require('../src/styles/colors.json'),
-	assets = require('../assets.json');
+	colors = require('../src/styles/colors.json');
 
 const templatePath = '../template.html',
 	outputPath = '../dist/';
@@ -53,9 +52,7 @@ async function generatePages(pages) {
 		);
 
 		for (const pageDef of pages) {
-			const pageContent = addAssets(
-				addColors(addContent(template, pageDef)),
-			);
+			const pageContent = addColors(addContent(template, pageDef));
 
 			await fs.appendFile(
 				path.resolve(__dirname, outputPath + `${pageDef.name}.html`),
@@ -69,17 +66,6 @@ async function generatePages(pages) {
 	} catch (err) {
 		console.error(err);
 	}
-}
-
-function addAssets(content) {
-	return content.replace(
-		'{{fonts}}',
-		assets.fonts
-			.map(({ url, htmlCode }) => {
-				return htmlCode.replace('{{url}}', url);
-			})
-			.join(' '),
-	);
 }
 
 function addContent(content, pageDef) {

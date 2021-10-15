@@ -26,6 +26,10 @@ p {
 	margin: 0;
 }
 
+svg {
+	vertical-align: middle;
+}
+
 button[disabled] {
 	opacity: 0.3;
 	cursor: not-allowed;

@@ -22,7 +22,6 @@
     "build": [
       "./src/**/*",
       "./scripts/**/*",
-      "./assets.json",
       "./template.html",
       "./webpack.config.main.js",
       "./webpack.config.worker.js"

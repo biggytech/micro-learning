@@ -2,6 +2,8 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import CogIcon from './icons/CogIcon';
+
 const CLASS_NAME = 'settings';
 
 const SettingsMenu = (props) => {
@@ -19,7 +21,7 @@ const SettingsMenu = (props) => {
 				className={`${CLASS_NAME}__button`}
 				onClick={toggleSettings}
 			>
-				<i className="fas fa-cog"></i>
+				<CogIcon />
 			</button>
 			<ul
 				className={classnames(`${CLASS_NAME}__list`, {

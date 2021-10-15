@@ -1,4 +1,3 @@
-import assets from '../assets.json';
 import automaticCacheAssetsList from '../auto_cacheAssetsList.json';
 
 const appShellCacheName = 'app-shell-v1',
@@ -17,7 +16,6 @@ const appShellCacheName = 'app-shell-v1',
 			url: '/manifest.json',
 			cors: false,
 		},
-		...assets.fonts.map(({ url }) => ({ url, cors: true })),
 	];
 
 const cache = {

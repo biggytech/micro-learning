@@ -1,6 +1,9 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
+import RemoveIcon from './icons/RemoveIcon';
+import CheckIcon from './icons/CheckIcon';
+
 const CLASS_NAME = 'link';
 
 const Link = (props) => {
@@ -30,14 +33,14 @@ const Link = (props) => {
 					title="Complete"
 					onClick={handleComplete}
 				>
-					<i className="fas fa-check"></i>
+					<CheckIcon />
 				</button>
 				<button
 					className={`${CLASS_NAME}__button ${CLASS_NAME}__button_danger`}
 					title="Remove"
 					onClick={handleRemove}
 				>
-					<i className="fas fa-trash"></i>
+					<RemoveIcon />
 				</button>
 			</div>
 		</li>

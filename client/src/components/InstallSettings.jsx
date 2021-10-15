@@ -1,6 +1,8 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import PropTypes from 'prop-types';
 
+import DownloadIcon from './icons/DownloadIcon';
+
 const CLASS_NAME = 'settings';
 
 const InstallSettings = forwardRef((props, ref) => {
@@ -29,7 +31,7 @@ const InstallSettings = forwardRef((props, ref) => {
 				disabled={isInstallDisabled}
 				onClick={onInstallClick}
 			>
-				Install app <i className="fas fa-download" />
+				Install app <DownloadIcon />
 			</button>
 		</li>
 	);

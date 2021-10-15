@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import BaloonIcon from './icons/BaloonIcon';
+
 const CLASS_NAME = 'settings',
 	DISPLAY_TIMES_TO_VALUES = new Map([
 		['12am', 0],
@@ -65,7 +67,7 @@ const NotificationsSettings = (props) => {
 						className={`${CLASS_NAME}__button`}
 						onClick={onEnableClick}
 					>
-						Enable push notifications <i className="fas fa-bell" />
+						Enable push notifications <BaloonIcon />
 					</button>
 				)}
 
