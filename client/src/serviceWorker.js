@@ -43,6 +43,13 @@ self.addEventListener('push', async (e) => {
 					data: link,
 					body: `Link: ${link.url}`,
 				});
+			} else {
+				return await createNotification({
+					title: `It's time to add new links!`,
+					body: `You'r links list is empty`,
+					data: { reminder: true },
+					addActions: false,
+				});
 			}
 		})(),
 	);
@@ -91,7 +98,7 @@ self.addEventListener('notificationclick', (e) => {
 	}
 });
 
-function createNotification({ title, data, body }) {
+function createNotification({ title, data, body, addActions = true }) {
 	const options = {
 		icon: 'images/notification.png',
 		tag: NOTIFICATIONS_GROUP_TAG,
@@ -100,6 +107,7 @@ function createNotification({ title, data, body }) {
 		data,
 	};
 	if (
+		addActions &&
 		Notification &&
 		'actions' in Notification.prototype &&
 		Notification.maxActions
