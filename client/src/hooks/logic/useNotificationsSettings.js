@@ -1,10 +1,10 @@
-import { useCallback, useState, useEffect, useRef } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 
 import settingsDB from '../../db/settings';
 import api from '../../api';
 import { isPushSupported } from '../../utils';
 
-const useNotificationsSettings = ({ registration, clientId }) => {
+const useNotificationsSettings = ({ registration, clientId, onError }) => {
 	const [notificationPermission, setNotificationPermission] = useState(
 		isPushSupported() ? Notification?.permission : '',
 	);
@@ -19,53 +19,57 @@ const useNotificationsSettings = ({ registration, clientId }) => {
 	}, []);
 
 	const saveSettings = useCallback(async () => {
-		let sub = await registration.pushManager.getSubscription();
-		if (!sub) {
-			const keys = await api.getKeys();
-			if (!keys) {
-				throw new Error('No response');
+		try {
+			let sub = await registration.pushManager.getSubscription();
+			if (!sub) {
+				const keys = await api.getKeys();
+				if (!keys) {
+					throw new Error('No response');
+				}
+				sub = await registration.pushManager.subscribe({
+					userVisibleOnly: true,
+					applicationServerKey: keys.publicKey,
+				});
 			}
-			sub = await registration.pushManager.subscribe({
-				userVisibleOnly: true,
-				applicationServerKey: keys.publicKey,
-			});
-		}
 
-		const settings = {
-			clientId,
-			notificationsHour,
-			subscriptionEndpoint: sub.endpoint,
-			timeZoneOffset: new Date().getTimezoneOffset(),
-		};
-		await settingsDB.put(settings);
-
-		if (notificationsHour !== -1) {
-			const currentDate = new Date();
-			const prefferedNotificationsDate = new Date(
-				currentDate.getFullYear(),
-				currentDate.getMonth(),
-				currentDate.getDate(),
+			const settings = {
+				clientId,
 				notificationsHour,
-				0,
-			);
-			const notificationsHourUTC =
-					prefferedNotificationsDate.getUTCHours(),
-				notificationsMinuteUTC =
-					prefferedNotificationsDate.getUTCMinutes();
+				subscriptionEndpoint: sub.endpoint,
+				timeZoneOffset: new Date().getTimezoneOffset(),
+			};
+			await settingsDB.put(settings);
 
-			console.log(
-				await api.saveSettings({
-					clientId,
-					subscription: JSON.stringify(sub.toJSON()),
-					notificationsHourUTC,
-					notificationsMinuteUTC,
-					timeZoneOffset: new Date().getTimezoneOffset(),
-				}),
-			);
-		} else {
-			await api.deleteSettings({ clientId });
+			if (notificationsHour !== -1) {
+				const currentDate = new Date();
+				const prefferedNotificationsDate = new Date(
+					currentDate.getFullYear(),
+					currentDate.getMonth(),
+					currentDate.getDate(),
+					notificationsHour,
+					0,
+				);
+				const notificationsHourUTC =
+						prefferedNotificationsDate.getUTCHours(),
+					notificationsMinuteUTC =
+						prefferedNotificationsDate.getUTCMinutes();
+
+				console.log(
+					await api.saveSettings({
+						clientId,
+						subscription: JSON.stringify(sub.toJSON()),
+						notificationsHourUTC,
+						notificationsMinuteUTC,
+						timeZoneOffset: new Date().getTimezoneOffset(),
+					}),
+				);
+			} else {
+				await api.deleteSettings({ clientId });
+			}
+		} catch (e) {
+			onError(e);
 		}
-	}, [registration, clientId, notificationsHour]);
+	}, [registration, clientId, notificationsHour, onError]);
 
 	const handleNotificationTimeSave = useCallback(async (time) => {
 		await settingsDB.put({

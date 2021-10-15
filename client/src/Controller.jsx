@@ -142,6 +142,7 @@ function Controller() {
 	} = useNotificationsSettingsLogic({
 		registration,
 		clientId,
+		onError: renderError,
 	});
 	const cacheStatus = useCacheStatus({
 		onChange: handleCacheStatusChange,
