@@ -133,6 +133,8 @@ function Controller() {
 	} = useLinks();
 	const { init: initClientId, clientId } = useClientId();
 
+	const { errorMessage, renderError } = useError({ isSingle: true });
+
 	const {
 		notificationPermission,
 		notificationsHour,
@@ -154,7 +156,6 @@ function Controller() {
 	const { supportStatus, update: updateSupportStatus } = useSupportStatus();
 
 	const { Header } = useHeader();
-	const { errorMessage, renderError } = useError({ isSingle: true });
 
 	const { successMessage, renderSuccess } = useSuccess();
 	const { linksList } = useLinksList({

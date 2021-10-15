@@ -67,7 +67,9 @@ const useNotificationsSettings = ({ registration, clientId, onError }) => {
 				await api.deleteSettings({ clientId });
 			}
 		} catch (e) {
-			onError(e);
+			if (e.message.indexOf('Failed to fetch') === -1) {
+				onError(e);
+			}
 		}
 	}, [registration, clientId, notificationsHour, onError]);
 
