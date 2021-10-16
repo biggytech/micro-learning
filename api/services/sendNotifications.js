@@ -19,6 +19,7 @@ const sendNotifications = async (vapidKeys, { pushLifetimeInSec }) => {
         settings.notificationsMinuteUTC === minute)
     ) {
       try {
+        console.log(JSON.stringify(settings));
         const result = await webpush.sendNotification(
           JSON.parse(settings.subscription),
           "",
