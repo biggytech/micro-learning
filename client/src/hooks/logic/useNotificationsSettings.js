@@ -86,12 +86,19 @@ const useNotificationsSettings = ({
 		}
 	}, [registration, clientId, notificationsHour, onError, onSave, isOffline]);
 
-	const handleNotificationTimeSave = useCallback(async (time) => {
-		await settingsDB.put({
-			notificationsHour: time,
-		});
-		setNotificationsHour(time);
-	}, []);
+	const handleNotificationTimeSave = useCallback(
+		async (time) => {
+			try {
+				await settingsDB.put({
+					notificationsHour: time,
+				});
+				setNotificationsHour(time);
+			} catch (err) {
+				onError(err);
+			}
+		},
+		[onError],
+	);
 
 	const init = useCallback(async () => {
 		const settings = await settingsDB.get();
