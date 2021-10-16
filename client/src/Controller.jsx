@@ -68,24 +68,28 @@ function Controller() {
 
 	const handleServiceWorkerInit = useCallback(
 		async (registration) => {
-			updateSupportStatus({ offline: !!registration });
+			try {
+				updateSupportStatus({ offline: !!registration });
 
-			if (!registration) {
-				renderStatus({
-					text: `Offline isn't supported`,
-					type: 'error',
-					status: 'done',
-				});
+				if (!registration) {
+					renderStatus({
+						text: `Offline isn't supported`,
+						type: 'error',
+						status: 'done',
+					});
+				}
+
+				await db.initialize();
+				updateRegistration(registration);
+
+				await initLinks();
+				await initNotificationsSettings();
+				await initClientId();
+
+				setIsReady(true);
+			} catch (err) {
+				renderGlobalError(err);
 			}
-
-			await db.initialize();
-			updateRegistration(registration);
-
-			await initLinks();
-			await initNotificationsSettings();
-			await initClientId();
-
-			setIsReady(true);
 		},
 		[
 			initClientId,
@@ -94,6 +98,7 @@ function Controller() {
 			renderStatus,
 			updateRegistration,
 			updateSupportStatus,
+			renderGlobalError,
 		],
 	);
 
